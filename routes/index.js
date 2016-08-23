@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const url = require('url');
 
 // Get home page
 router.get('/', function(req, res) {
@@ -9,17 +9,17 @@ router.get('/', function(req, res) {
 
 // Get url submitted by user
 router.get('/api/imagesearch/*:offset',function(req,res){
-	var protocol = req.params.protocol,
-		uri = req.params['0'],
-		fullURL = protocol + uri,
-		shortenedURL = '',
-		results,
-		db = req.db,
-		collection = db.get('urlcollection');
 
-	res.setHeader('Content-Type', 'application/json');
+	var path = url.parse(req.url).pathname.split('/'),
+		searchQuery = path[path.length - 1],
+		offset = url.parse(req.url,true).query.offset;
 
-	res.send(JSON.stringify(results));
+	console.log("searchQuery:",searchQuery);
+	console.log("offset:",offset);
+
+	res.setHeader('Content-Type', 'text/plain');
+
+	res.send("hello");
 });
 
 router.get('/*',function(req,res){

@@ -2,8 +2,8 @@
 
 const express = require('express');
 const assert = require('assert');
-const monk = require('monk');
-const mongodb = require('mongodb');
+// const monk = require('monk');
+// const mongodb = require('mongodb');
 
 const app = express();
 
@@ -11,10 +11,10 @@ const app = express();
 const port = parseInt(process.env.PORT, 10) || 8080;
 const hostname = parseInt(process.env.PORT, 10) ? '0.0.0.0' : '127.0.0.1';
 
-var db = monk();
+// var db = monk();
 
 // Imgur API
-Authorization: Client-ID 9718f34ee16c087;
+// Authorization: Client-ID 9718f34ee16c087;
 
 
 // Set public directory
@@ -28,10 +28,10 @@ app.set('views',__dirname + '/views');
 var routes = require('./routes/index');
 
 // Monk connection object to make db accessible to router
-app.use(function(req,res,next){
-    req.db = db;
-    next();
-});
+// app.use(function(req,res,next){
+//     req.db = db;
+//     next();
+// });
 
 app.use('/',routes);
 
