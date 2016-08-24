@@ -24,7 +24,7 @@ router.get('/api/latest/imagesearch/*', function(req, res) {
 		}else{
 			res.setHeader('Content-Type', 'application/json');
 			if(result){
-				res.send(result.slice(0,10));
+				res.send(result.length > 10 ? result.splice(result.length - 11, result.length - 1) : result);
 			}else{
 				res.send({"Recent Searches": "none"});
 			}
