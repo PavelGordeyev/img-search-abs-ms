@@ -2,8 +2,8 @@
 
 const express = require('express');
 const assert = require('assert');
-// const monk = require('monk');
-// const mongodb = require('mongodb');
+const monk = require('monk');
+const mongodb = require('mongodb');
 
 const app = express();
 
@@ -11,7 +11,7 @@ const app = express();
 const port = parseInt(process.env.PORT, 10) || 8080;
 const hostname = parseInt(process.env.PORT, 10) ? '0.0.0.0' : '127.0.0.1';
 
-// var db = monk();
+var db = monk("mongodb://admin:password@ds013956.mlab.com:13956/imgabssearches");
 
 // Set public directory
 app.use('/static', express.static(__dirname + './public'));
@@ -23,11 +23,11 @@ app.set('views',__dirname + '/views');
 // Set the routes
 var routes = require('./routes/index');
 
-// Monk connection object to make db accessible to router
-// app.use(function(req,res,next){
-//     req.db = db;
-//     next();
-// });
+//Monk connection object to make db accessible to router
+app.use(function(req,res,next){
+    req.db = db;
+    next();
+});
 
 app.use('/',routes);
 

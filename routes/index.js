@@ -5,7 +5,22 @@ const imgSearch = require('../public/js/imgSearch.js');
 
 // Get home page
 router.get('/', function(req, res) {
-  res.render('index');
+	var db = req.db,
+		collection = db.get('imgcollection');
+
+	collection.find({},{},function(err,result){
+		if(err){
+			console.log("Error loading image searches:",err);
+			res.send("Error loading image searches");
+		}else{
+			res.setHeader('Content-Type', 'application/json');
+			if(result){
+				res.send(result);
+			}else{
+				res.send({"Recent Searches": "none"});
+			}
+		}
+	});
 });
 
 // Get url submitted by user
@@ -21,11 +36,11 @@ router.get('/api/imagesearch/*:offset',function(req,res){
 
 });
 
-router.get('/*',function(req,res){
-	var id = req.params['0'],
-		db = req.db,
-		collection = db.get();
+// router.get('/*',function(req,res){
+// 	var id = req.params['0'],
+// 		db = req.db,
+// 		collection = db.get('imgcollection');
 	
-});
+// });
 
 module.exports = router;
