@@ -2,6 +2,7 @@ const https = require('https');
 
 function getImages(searchQuery,offset,imgSrc,res){
 
+	// Set the options for a bing search and an imgur search
 	var bing_options = {
 			host: "api.cognitive.microsoft.com",
 			path: "/bing/v5.0/images/search?q=" + searchQuery + "&count=10&offset=" + offset + "&mkt=en-us&safeSearch=Moderate",
@@ -16,6 +17,7 @@ function getImages(searchQuery,offset,imgSrc,res){
 		},
 		options = imgSrc === 'bing' ? bing_options : imgur_options;
 
+	// Get the images depending on the img src search type
 	imgEngine(imgSrc,offset,options,res);
 }
 
@@ -23,8 +25,11 @@ function imgEngine(imgSrc,offset,options,res){
 	var data = '';
 
 	var req = https.request(options,function(_res){
+
+		// Set the response encoding
 		_res.setEncoding('utf8');
 
+		// Get the initial data
 		_res.on('data', function(chunk){
 			if(_res.statusCode === 200){
 				data += chunk;
@@ -33,6 +38,7 @@ function imgEngine(imgSrc,offset,options,res){
 			}
 		});
 
+		// Output the results of the data depending on search type
 		_res.on('end', function(){
 			if(data){
 				if(imgSrc === 'bing'){
@@ -61,16 +67,18 @@ function imgEngine(imgSrc,offset,options,res){
 			
 		});
 
+		// Error with response
 		_res.on('error',function(err){
 			console.log("Error on response:", err.message);
 		});
 	});
 
-
+	// Error with request
 	req.on('error',function(err){
 		console.log("Error on request:",err.message);
 	});
 
+	// Close the request
 	req.end();
 }
 

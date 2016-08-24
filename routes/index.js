@@ -4,7 +4,14 @@ const url = require('url');
 const imgSearch = require('../public/js/imgSearch.js');
 const moment = require('moment');
 
-// Get home page
+
+// Get the home page
+router.get('/',function(req,res){
+	res.render('index');
+});
+
+
+// Get latest image searches
 router.get('/api/latest/imagesearch/*', function(req, res) {
 	var db = req.db,
 		collection = db.get('imgcollection');
