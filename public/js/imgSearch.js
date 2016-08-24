@@ -75,39 +75,3 @@ function imgEngine(imgSrc,offset,options,res){
 }
 
 module.exports.getImages = getImages;
-	// var req = https.request(imgur_options,function(_res){
-	// 	console.log('STATUS: ' + _res.statusCode);
-	// 	// console.log('headers:', res.headers);
-	// 	_res.setEncoding('utf8');
-
-	// 	_res.on('data', function(chunk){
-	// 		if(_res.statusCode === 200){
-	// 			data += chunk;
-	// 		}else{
-	// 			console.log("ERROR:", _res.statusCode);
-	// 		}
-	// 	});
-
-	// 	_res.on('end', function(){
-	// 		if(data){
-	// 			var results = JSON.parse(data).data.slice(0,offset).map(function(result){
-	// 				return {
-	// 					url: result.link,
-	// 					snippet: result.title
-	// 				};
-	// 			});
-	// 			// console.log("x",results);
-	// 			res.setHeader('Content-Type', 'application/json');
-	// 			res.send(JSON.stringify(results));
-	// 		}else{
-	// 			console.log("No results found...");
-	// 		}
-			
-	// 	});
-
-	// 	_res.on('error',function(err){
-	// 		console.log("Error on response:", err.message);
-	// 	});
-	// });
-
-

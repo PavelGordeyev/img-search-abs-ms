@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const url = require('url');
 const imgSearch = require('../public/js/imgSearch.js');
+const moment = require('moment');
 
 // Get home page
-router.get('/', function(req, res) {
+router.get('/api/latest/imagesearch/*', function(req, res) {
 	var db = req.db,
 		collection = db.get('imgcollection');
 
+	// Return all of recent searches
 	collection.find({},{},function(err,result){
 		if(err){
 			console.log("Error loading image searches:",err);
@@ -15,7 +17,7 @@ router.get('/', function(req, res) {
 		}else{
 			res.setHeader('Content-Type', 'application/json');
 			if(result){
-				res.send(result);
+				res.send(result.slice(0,10));
 			}else{
 				res.send({"Recent Searches": "none"});
 			}
@@ -29,18 +31,22 @@ router.get('/api/imagesearch/*:offset',function(req,res){
 	var path = url.parse(req.url).pathname.split('/'),
 		searchQuery = path[path.length - 1],
 		offset = url.parse(req.url,true).query.offset,
-		imgSrc = 'imgur';
+		imgSrc = 'bing',
+		db = req.db,
+		collection = db.get('imgcollection'),
+		now = moment();
 
+	// Add search to the db with a timestamp
+	collection.insert({
+		"term": searchQuery,
+		"when": now.format('YYYY-MM-DD HH:mm:ss Z')
+	}, function(err, result) {
+	    assert.equal(err, null);
+	    assert.equal(1, result.ops.length);
+	});
 	// Search for images via specified search engine (Bing Image or Imgur)
 	imgSearch.getImages(searchQuery,offset,imgSrc,res);
 
 });
-
-// router.get('/*',function(req,res){
-// 	var id = req.params['0'],
-// 		db = req.db,
-// 		collection = db.get('imgcollection');
-	
-// });
 
 module.exports = router;
