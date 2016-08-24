@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const url = require('url');
+const imgSearch = require('../public/js/imgSearch.js');
 
 // Get home page
 router.get('/', function(req, res) {
@@ -12,14 +13,12 @@ router.get('/api/imagesearch/*:offset',function(req,res){
 
 	var path = url.parse(req.url).pathname.split('/'),
 		searchQuery = path[path.length - 1],
-		offset = url.parse(req.url,true).query.offset;
+		offset = url.parse(req.url,true).query.offset,
+		imgSrc = 'imgur';
 
-	console.log("searchQuery:",searchQuery);
-	console.log("offset:",offset);
+	// Search for images via specified search engine (Bing Image or Imgur)
+	imgSearch.getImages(searchQuery,offset,imgSrc,res);
 
-	res.setHeader('Content-Type', 'text/plain');
-
-	res.send("hello");
 });
 
 router.get('/*',function(req,res){

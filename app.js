@@ -13,10 +13,6 @@ const hostname = parseInt(process.env.PORT, 10) ? '0.0.0.0' : '127.0.0.1';
 
 // var db = monk();
 
-// Imgur API
-// Authorization: Client-ID 9718f34ee16c087;
-
-
 // Set public directory
 app.use('/static', express.static(__dirname + './public'));
 
