@@ -10,38 +10,20 @@ router.get('/',function(req,res){
 	res.render('index');
 });
 
-// Sort the results by the latest search first
-function sortResults(results){
-	var loc = 0,
-		temp;
-
-	for(var i=results.length - 1;i>=Math.floor(results.length/2);i--){
-		temp = results[i];
-		results[i] = results[loc];
-		results[loc] = temp;
-		loc++;
-	}
-	return results;
-}
-
 // Get latest image searches
 router.get('/api/latest/imagesearch/*', function(req, res) {
 	var db = req.db,
 		collection = db.get('imgcollection');
-
+	
 	// Return all of recent searches
-	collection.find({},{},function(err,result){
+	collection.find({},{limit: 10, sort: {when: -1}},function(err,result){
 		if(err){
 			console.log("Error loading image searches:",err);
 			res.send("Error loading image searches");
 		}else{
 			res.setHeader('Content-Type', 'application/json');
 			if(result){
-				var output = result.length > 10 ? result.splice(result.length - 11, result.length - 1) : result;
-				output = output.map(function(element){
-					return {"term": element.term, "when": element.when};
-				});
-				res.send(sortResults(output));
+				res.send(result);
 			}else{
 				res.send({"Recent Searches": "none"});
 			}
