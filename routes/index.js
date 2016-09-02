@@ -16,7 +16,7 @@ router.get('/api/latest/imagesearch/*', function(req, res) {
 		collection = db.get('imgcollection');
 	
 	// Return all of recent searches
-	collection.find({},{limit: 10, sort: {when: -1}},function(err,result){
+	collection.find({},{limit: 10, sort: {when: -1}, fields: {_id: 0}},function(err,result){
 		if(err){
 			console.log("Error loading image searches:",err);
 			res.send("Error loading image searches");
